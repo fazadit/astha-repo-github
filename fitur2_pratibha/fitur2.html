@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Astha App</title>
+    <link href="../dist/styles.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqB7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+    <style>
+        .hidden { display: none; }
+        .menu-dropdown {
+            position: absolute;
+            top: 60px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            z-index: 1000;
+            width: 200px;
+            padding: 10px 0;
+            opacity: 0;
+            transform: translateY(-20px);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+        .menu-dropdown a {
+            display: block;
+            padding: 12px;
+            text-align: center;
+            font-weight: bold;
+            color: #333;
+            text-decoration: none;
+            transition: background 0.2s;
+        }
+        .menu-dropdown a:hover {
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 8px;
+        }
+        .menu-dropdown.show {   
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .quote-container {
+            position: relative;
+            overflow: hidden;
+            max-width: 600px;
+            margin: auto;
+            min-height: 150px; /* Sesuaikan dengan tinggi teks */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .quote-text {
+            position: absolute;
+            opacity: 0;
+            transform: translateX(100%);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+            text-align: center;
+            width: 80%;
+        }
+        .quote-text.active {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        /* Tombol navigasi */
+        .quote-container .nav-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.2rem;
+            cursor: pointer;
+            color: #6d6060;
+            background-color:ivory;
+            border-radius: 80%;
+            padding: 10px 15px;
+            transition: background 0.3s;
+        }
+
+        .quote-container .nav-btn:hover {
+            background: rgba(255, 255, 255, 1);
+        }
+
+        .nav-left {
+            left: 5px;
+        }
+
+        .nav-right {
+            right: 5px;
+        }
+        @media (max-width:768px) {
+                .quote-container .nav-btn   {
+                    font-size: 1,5rem;
+                }
+        }
+    </style>
+</head>
+
+<body class="bg-#bfbfbf flex items-center justify-center min-h-screen">
+    <div class="w-full min-h-screen sm:rounded-lg shadow-lg p-4 relative;" style="background-color:ivory;">
+        <div class="flex items-center justify-between border-b pb-2 mb-4">
+            <div class="flex items-center">
+                <img alt="App logo" class="w-10 h-10 rounded-full mt-2 mb-2" src="https://placehold.co/40x40"/>
+                <span class="ml-6 text-xl font-bold">ASTHA</span>
+            </div>
+            <button class="block text-xl" id="hamburgerBtn">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+
+        <!-- Dropdown Menu -->
+        <div id="menu" class="menu-dropdown hidden">
+            <a href="../fitur1_abhinaya/fitur1.html">Abhinaya</a>
+            <a href="fitur2.html">Pratibha</a>
+            <a href="../fitur3_sheeka/fitur3.html">Sheeka</a>
+            <a href="../fitur4_sharira/fitur4.html">Sharira</a>
+            <a href="../fitur5_shanti/fitur5.html">Shanti</a>
+            <a href="../fitur6_tirta/fitur6.html">Tirta</a>
+            <a href="../index.html" class="font-bold">Menu Utama</a>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById("hamburgerBtn").addEventListener("click", function() {
+            const menu = document.getElementById("menu");
+            menu.classList.toggle("hidden");
+            menu.classList.toggle("show");
+        });
+    </script>
+    <script src="script.js"></script>
+</body>
+</html>

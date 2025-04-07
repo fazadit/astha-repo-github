@@ -50,6 +50,17 @@
       padding-right: 8px;
     }
   </style>
+
+  <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+  <script>
+    window.OneSignalDeferred = window.OneSignalDeferred || [];
+    OneSignalDeferred.push(async function(OneSignal) {
+      await OneSignal.init({
+        appId: "eaa8e30e-7ab7-4102-be16-c9398cf348a1",
+      });
+    });
+  </script>
+  
 </head>
 <body class="bg-gray-200 flex items-center justify-center min-h-screen">
   <div class="w-full min-h-screen sm:rounded-lg shadow-lg p-6 relative bg-[ivory]">

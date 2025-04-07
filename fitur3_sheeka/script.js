@@ -17,8 +17,7 @@ import {
 const firebaseConfig = {
   apiKey: "AIzaSyDCCy9lVrewr3EraM_Sua7h8LXvJBr8Xhc",
   authDomain: "astha-project-8048f.firebaseapp.com",
-  databaseURL:
-    "https://astha-project-8048f-default-rtdb.asia-southeast1.firebasedatabase.app",
+  databaseURL: "https://astha-project-8048f-default-rtdb.asia-southeast1.firebasedatabase.app",
   projectId: "astha-project-8048f",
   storageBucket: "astha-project-8048f.appspot.com",
   messagingSenderId: "801380674010",
@@ -29,7 +28,7 @@ const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 const messaging = getMessaging(app);
 
-// 🔐 ID unik pengguna (local)
+// 🔐 User ID unik lokal
 let userId = localStorage.getItem("userId");
 if (!userId) {
   userId = crypto.randomUUID();
@@ -43,9 +42,11 @@ function addTask() {
 
   if (!taskInput.value.trim()) return;
 
-  const deadlineFormatted = deadlineInput.value
-    ? new Date(deadlineInput.value).toLocaleString("id-ID", {
-        weekday:"short",
+  const deadlineDate = deadlineInput.value ? new Date(deadlineInput.value) : null;
+  const deadlineTimestamp = deadlineDate ? deadlineDate.getTime() : null;
+  const deadlineFormatted = deadlineDate
+    ? deadlineDate.toLocaleString("id-ID", {
+        weekday: "short",
         day: "2-digit",
         month: "short",
         year: "numeric",
@@ -58,8 +59,10 @@ function addTask() {
   set(newTaskRef, {
     id: newTaskRef.key,
     task: taskInput.value.trim(),
-    deadline: deadlineFormatted,
-    completed: false
+    deadline: deadlineTimestamp,
+    deadlineFormatted: deadlineFormatted,
+    completed: false,
+    notifSent: false
   });
 
   taskInput.value = "";
@@ -73,6 +76,11 @@ function toggleTask(taskId, isCompleted) {
   });
 }
 
+// Hapus tugas
+function deleteTask(taskId) {
+  remove(ref(db, "todolist/" + userId + "/" + taskId));
+}
+
 // Tampilkan tugas
 function loadTasks() {
   const taskList = document.getElementById("task-list");
@@ -80,8 +88,7 @@ function loadTasks() {
     taskList.innerHTML = "";
 
     if (!snapshot.exists()) {
-      taskList.innerHTML =
-        '<p class="text-center text-gray-500">Belum ada tugas.</p>';
+      taskList.innerHTML = '<p class="text-center text-gray-500">Belum ada tugas.</p>';
       return;
     }
 
@@ -89,8 +96,7 @@ function loadTasks() {
       const taskData = childSnapshot.val();
 
       const li = document.createElement("li");
-      li.className =
-        "flex items-center justify-between bg-white p-3 rounded-lg shadow-md";
+      li.className = "flex items-center justify-between bg-white p-3 rounded-lg shadow-md";
 
       const left = document.createElement("div");
       left.className = "flex items-center";
@@ -98,19 +104,17 @@ function loadTasks() {
       const checkbox = document.createElement("input");
       checkbox.type = "checkbox";
       checkbox.checked = taskData.completed;
-      checkbox.className =
-        "mr-3 w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 rounded";
-
+      checkbox.className = "mr-3 w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 rounded";
       checkbox.addEventListener("change", () => {
         toggleTask(taskData.id, checkbox.checked);
       });
 
       const content = document.createElement("div");
       content.innerHTML = `
-        <p class="font-medium ${
-          taskData.completed ? "line-through text-gray-500" : ""
-        }">${taskData.task}</p>
-        <p class="text-sm text-gray-500">${taskData.deadline}</p>
+        <p class="font-medium ${taskData.completed ? "line-through text-gray-500" : ""}">
+          ${taskData.task}
+        </p>
+        <p class="text-sm text-gray-500">${taskData.deadlineFormatted || "Tanpa Deadline"}</p>
       `;
 
       left.appendChild(checkbox);
@@ -128,23 +132,17 @@ function loadTasks() {
   });
 }
 
-// Hapus tugas
-function deleteTask(taskId) {
-  remove(ref(db, "todolist/" + userId + "/" + taskId));
-}
-
 // Load saat halaman dibuka
 window.onload = loadTasks;
 
-// Notifikasi tetap disiapin kalau nanti dibutuhin (nggak dihapus)
+// Request izin notifikasi
 Notification.requestPermission().then((permission) => {
   if (permission === "granted") {
     navigator.serviceWorker
       .register("firebase-messaging-sw.js")
       .then((registration) => {
         getToken(messaging, {
-          vapidKey:
-            "BMdt3BZc0Fvc-FKH0VrfoRQD9TMIpF7OGvUXPqDS-nHUgksvzQ_NiH-IoRopF_p1yO4_RhuLf0hbJHGT-mkXFeA",
+          vapidKey: "BMdt3BZc0Fvc-FKH0VrfoRQD9TMIpF7OGvUXPqDS-nHUgksvzQ_NiH-IoRopF_p1yO4_RhuLf0hbJHGT-mkXFeA",
           serviceWorkerRegistration: registration
         })
           .then((currentToken) => {
@@ -162,6 +160,6 @@ Notification.requestPermission().then((permission) => {
   }
 });
 
-// Ekspor fungsi ke HTML
+// Ekspor fungsi
 window.addTask = addTask;
 window.deleteTask = deleteTask;

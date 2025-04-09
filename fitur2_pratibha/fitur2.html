@@ -3,9 +3,9 @@
 <head>
     <meta charset="utf-8"/>
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-    <title>Astha App</title>
+    <title>Astha-Pratibha</title>
     <link href="../dist/styles.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqB7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
     <style>
         .hidden { display: none; }
@@ -37,7 +37,7 @@
             background: rgba(255, 255, 255, 0.5);
             border-radius: 8px;
         }
-        .menu-dropdown.show {   
+        .menu-dropdown.show {
             opacity: 1;
             transform: translateY(0);
         }
@@ -46,7 +46,7 @@
             overflow: hidden;
             max-width: 600px;
             margin: auto;
-            min-height: 150px; /* Sesuaikan dengan tinggi teks */
+            min-height: 150px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -63,7 +63,6 @@
             opacity: 1;
             transform: translateX(0);
         }
-        /* Tombol navigasi */
         .quote-container .nav-btn {
             position: absolute;
             top: 50%;
@@ -71,33 +70,26 @@
             font-size: 1.2rem;
             cursor: pointer;
             color: #6d6060;
-            background-color:ivory;
+            background-color: ivory;
             border-radius: 80%;
             padding: 10px 15px;
             transition: background 0.3s;
         }
-
         .quote-container .nav-btn:hover {
             background: rgba(255, 255, 255, 1);
         }
-
-        .nav-left {
-            left: 5px;
-        }
-
-        .nav-right {
-            right: 5px;
-        }
+        .nav-left { left: 5px; }
+        .nav-right { right: 5px; }
         @media (max-width:768px) {
-                .quote-container .nav-btn   {
-                    font-size: 1,5rem;
-                }
+            .quote-container .nav-btn {
+                font-size: 1.5rem;
+            }
         }
     </style>
 </head>
 
-<body class="bg-#bfbfbf flex items-center justify-center min-h-screen">
-    <div class="w-full min-h-screen sm:rounded-lg shadow-lg p-4 relative;" style="background-color:ivory;">
+<body class="bg-[#bfbfbf] flex items-center justify-center min-h-screen">
+    <div class="w-full min-h-screen sm:rounded-lg shadow-lg p-4 relative" style="background-color:ivory;">
         <div class="flex items-center justify-between border-b pb-2 mb-4">
             <div class="flex items-center">
                 <img alt="App logo" class="w-10 h-10 rounded-full mt-2 mb-2" src="https://placehold.co/40x40"/>
@@ -118,6 +110,17 @@
             <a href="../fitur6_tirta/fitur6.html">Tirta</a>
             <a href="../index.html" class="font-bold">Menu Utama</a>
         </div>
+
+        <!-- Konten Homepage Fitur 2 -->
+        <div class="flex flex-col items-center justify-center mt-16 space-y-6 text-center">
+            <h1 class="text-xl font-bold text-blue-700">Selamat Datang di Fitur Soft Skill</h1>
+            <p class="text-lg text-gray-700 max-w-xl margin-bottom">Temukan potensi dirimu melalui tes, pelajari materi pengembangan diri, dan ikuti tantangan menarik untuk meningkatkan soft skill kamu.</p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <a href="tes_softskill.html" class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-4 px-6 rounded-xl shadow-lg p-6">Identifikasi Soft Skill</a>
+                <a href="materi_softskill.html" class="bg-green-500 hover:bg-green-600 text-white font-semibold py-4 px-6 rounded-xl shadow-lg">Tips & Trick</a>
+                <a href="tantangan_softskill.html" style="background-color: #fbbf24; color: white; padding: 1rem 1.5rem; border-radius: 1rem; font-weight: 600; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">Tantangan</a>
+            </div>
+        </div>
     </div>
 
     <script>
@@ -127,6 +130,6 @@
             menu.classList.toggle("show");
         });
     </script>
-    <script src="script.js"></script>
+    <script src=""></script>
 </body>
 </html>

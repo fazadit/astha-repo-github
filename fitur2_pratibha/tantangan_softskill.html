@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>Astha App</title>
+  <link href="../dist/styles.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <style>
+    .hidden { display: none; }
+    .menu-dropdown {
+      position: absolute;
+      top: 60px;
+      right: 20px;
+      background: rgba(255, 255, 255, 0.8);
+      backdrop-filter: blur(10px);
+      border-radius: 12px;
+      z-index: 1000;
+      width: 200px;
+      padding: 10px 0;
+      opacity: 0;
+      transform: translateY(-20px);
+      transition: opacity 0.3s ease, transform 0.3s ease;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    }
+    .menu-dropdown a {
+      display: block;
+      padding: 12px;
+      text-align: center;
+      font-weight: bold;
+      color: #333;
+      text-decoration: none;
+      transition: background 0.2s;
+    }
+    .menu-dropdown a:hover {
+      background: rgba(255, 255, 255, 0.5);
+      border-radius: 8px;
+    }
+    .menu-dropdown.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .challenge-item.completed {
+      text-decoration: line-through;
+      color: gray;
+    }
+    .btn-softskill {
+      flex-direction: column;
+      width: 150px;            
+      height: 120px;          
+      text-align: center;
+    }
+
+    .btn-softskill i {
+      width: 20px;
+      height: 20px;
+    }
+
+    .btn-softskill span {
+      font-size: 1.2rem;
+      margin-top: 0.5rem;
+      line-height: 1.2;
+      word-wrap: break-word;
+      max-width: 100%;
+    }
+
+  </style>
+</head>
+
+<body class="bg-[#bfbfbf] flex items-center justify-center min-h-screen">
+  <div class="w-full min-h-screen sm:rounded-lg shadow-lg p-4 relative" style="background-color:ivory;">
+    
+    <!-- Header -->
+    <div class="flex items-center justify-between border-b pb-2 mb-4">
+      <div class="flex items-center">
+        <img alt="App logo" class="w-10 h-10 rounded-full mt-2 mb-2" src="https://placehold.co/40x40"/>
+        <span class="ml-6 text-xl font-bold">ASTHA</span>
+      </div>
+      <button class="block text-xl" id="hamburgerBtn">
+        <i class="fas fa-bars"></i>
+      </button>
+    </div>
+
+    <!-- Dropdown Menu -->
+    <div id="menu" class="menu-dropdown hidden">
+      <a href="../fitur1_abhinaya/fitur1.html">Abhinaya</a>
+      <a href="fitur2.html">Pratibha</a>
+      <a href="../fitur3_sheeka/fitur3.html">Sheeka</a>
+      <a href="../fitur4_sharira/fitur4.html">Sharira</a>
+      <a href="../fitur5_shanti/fitur5.html">Shanti</a>
+      <a href="../fitur6_tirta/fitur6.html">Tirta</a>
+      <a href="../index.html" class="font-bold">Menu Utama</a>
+    </div>
+
+    <!-- Pilihan Kategori -->
+    <div id="kategoriContainer" class="mt-24 px-4">
+      <h2 class="text-2xl font-bold pb-16 text-center">Pilih Kategori Tantangan</h2>
+    
+      <div class="grid grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
+        <button onclick="tampilkanTantangan('kerja_tim')" class="btn-softskill">
+          <i data-lucide="users" class="w-8 h-8"></i><span>Kerja Sama</span>
+        </button>
+        <button onclick="tampilkanTantangan('komunikasi')" class="btn-softskill">
+          <i data-lucide="mic" class="w-8 h-8"></i><span>Komunikasi</span>
+        </button>
+        <button onclick="tampilkanTantangan('adaptasi')" class="btn-softskill">
+          <i data-lucide="repeat" class="w-8 h-8"></i><span>Adaptasi</span>
+        </button>
+        <button onclick="tampilkanTantangan('empati')" class="btn-softskill">
+          <i data-lucide="heart" class="w-8 h-8"></i><span>Empati</span>
+        </button>
+        <button onclick="tampilkanTantangan('pemecahan_masalah')" class="btn-softskill">
+          <i data-lucide="brain-circuit" class="w-8 h-8"></i><span>Berpikir Kritis</span>
+        </button>
+        <button onclick="tampilkanTantangan('kepemimpinan')" class="btn-softskill">
+          <i data-lucide="badge-check" class="w-8 h-8"></i><span>Kepemimpinan</span>
+        </button>
+        <button onclick="tampilkanTantangan('manajemen_waktu')" class="btn-softskill col-span-2 lg:col-span-1 mx-auto">
+          <i data-lucide="clock" class="w-10 h-10"></i><span>Manajemen Waktu</span>
+        </button>
+      </div>
+    </div>
+    
+
+    <!-- Daftar Tantangan -->
+    <div id="tantanganContainer" class="hidden mt-10 p-4 bg-white rounded-lg shadow-md max-w-2xl mx-auto">
+      <button onclick="kembaliKeKategori()" class="mb-4 text-blue-600 hover:underline">← Kembali ke Kategori</button>
+      <h2 class="text-xl font-bold mb-4 text-center" id="judulTantangan">Tantangan</h2>
+      <ul id="challengeList" class="space-y-3"></ul>
+    </div>
+  </div>
+
+  <script>
+    const tantangan = {
+      empati: [
+        "Mendengarkan cerita teman tanpa menyela",
+        "Membantu teman yang sedang kesulitan",
+        "Menghibur teman yang sedang sedih",
+        "Menjadi relawan dalam kegiatan sosial",
+        "Memberikan pujian tulus kepada teman"
+      ],
+      kepemimpinan: [
+        "Mengorganisir kelompok belajar",
+        "Menjadi ketua kelompok dalam proyek",
+        "Membuat rencana kegiatan sederhana",
+        "Mengambil keputusan dalam diskusi",
+        "Memberi arahan dengan jelas"
+      ],
+      komunikasi: [
+        "Berani berbicara di depan kelas",
+        "Mengungkapkan pendapat dengan sopan",
+        "Mendengarkan saat orang lain berbicara",
+        "Menulis pesan yang jelas dan sopan",
+        "Berlatih presentasi di depan cermin"
+      ],
+      manajemen_waktu: [
+        "Membuat jadwal harian",
+        "Menghindari menunda-nunda tugas",
+        "Menyelesaikan tugas tepat waktu",
+        "Membagi waktu antara belajar dan bermain",
+        "Tidur dan bangun tepat waktu"
+      ],
+      kerja_tim: [
+        "Berpartisipasi aktif dalam kelompok",
+        "Membantu anggota tim yang kesulitan",
+        "Menghargai pendapat orang lain",
+        "Bekerja sama menyelesaikan tugas",
+        "Tidak memaksakan kehendak"
+      ],
+      pemecahan_masalah: [
+        "Mencari solusi saat ada konflik kecil",
+        "Menyusun langkah-langkah menyelesaikan tugas sulit",
+        "Mencoba hal baru untuk mengatasi hambatan",
+        "Belajar dari kesalahan",
+        "Bertanya saat tidak paham"
+      ],
+      adaptasi: [
+        "Menyesuaikan diri saat guru baru masuk",
+        "Mencoba tempat duduk baru",
+        "Mengikuti aturan baru di kelas",
+        "Berkenalan dengan teman baru",
+        "Menyesuaikan diri saat ada perubahan jadwal"
+      ]
+    };
+  
+    function getKey(kategori, index) {
+      return `tantangan_${kategori}_${index}`;
+    }
+  
+    function tampilkanTantangan(kategori) {
+      const container = document.getElementById("tantanganContainer");
+      const list = document.getElementById("challengeList");
+      const judul = document.getElementById("judulTantangan");
+  
+      list.innerHTML = "";
+      judul.textContent = "Tantangan: " + kategori.charAt(0).toUpperCase() + kategori.slice(1).replace("_", " ");
+  
+      (tantangan[kategori] || []).forEach((teks, i) => {
+        const li = document.createElement("li");
+        li.className = "flex items-center gap-3";
+  
+        const checked = localStorage.getItem(getKey(kategori, i)) === "true";
+        const completedClass = checked ? "completed" : "";
+  
+        li.innerHTML = `
+          <input type="checkbox" class="challenge-checkbox" data-kategori="${kategori}" data-index="${i}" ${checked ? "checked" : ""}>
+          <span class="challenge-item ${completedClass}">${teks}</span>`;
+  
+        list.appendChild(li);
+      });
+  
+      document.getElementById("kategoriContainer").classList.add("hidden");
+      container.classList.remove("hidden");
+  
+      document.querySelectorAll('.challenge-checkbox').forEach((checkbox) => {
+        checkbox.addEventListener('change', () => {
+          const kategori = checkbox.getAttribute("data-kategori");
+          const index = checkbox.getAttribute("data-index");
+          const item = checkbox.nextElementSibling;
+  
+          localStorage.setItem(getKey(kategori, index), checkbox.checked);
+          item.classList.toggle('completed', checkbox.checked);
+        });
+      });
+    }
+  
+    function kembaliKeKategori() {
+      document.getElementById("tantanganContainer").classList.add("hidden");
+      document.getElementById("kategoriContainer").classList.remove("hidden");
+    }
+  
+    document.getElementById("hamburgerBtn").addEventListener("click", function () {
+      const menu = document.getElementById("menu");
+      menu.classList.toggle("hidden");
+      menu.classList.toggle("show");
+    });
+  
+    lucide.createIcons();
+  </script>
+  
+
+  <style>
+    .btn-softskill {
+      background-color: #60A5FA;
+      color: white;
+      font-size: 1.125rem;
+      font-weight: 600;
+      padding: 0.75rem 1rem;
+      border-radius: 1rem;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+    }
+    .btn-softskill:hover {
+      background-color: #3B82F6;
+    }
+  </style>
+</body>
+</html>

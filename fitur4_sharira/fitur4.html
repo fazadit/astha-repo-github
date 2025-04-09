@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Workout - Astha App</title>
+  <link href="../dist/styles.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .hidden { display: none; }
+    .menu-dropdown {
+        position: absolute;
+        top: 60px;
+        right: 20px;
+        background: rgba(255, 255, 255, 0.8);
+        backdrop-filter: blur(10px);
+        border-radius: 12px;
+        z-index: 1000;
+        width: 200px;
+        padding: 10px 0;
+        opacity: 0;
+        transform: translateY(-20px);
+        transition: opacity 0.3s ease, transform 0.3s ease;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    }
+    .menu-dropdown a {
+        display: block;
+        padding: 12px;
+        text-align: center;
+        font-weight: bold;
+        color: #333;
+        text-decoration: none;
+        transition: background 0.2s;
+    }
+    .menu-dropdown a:hover {
+        background: rgba(255, 255, 255, 0.5);
+        border-radius: 8px;
+    }
+    .menu-dropdown.show {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    .active-day {
+      background-color: #3b82f6;
+      color: white;
+      border-radius: 9999px;
+      padding: 4px 10px;
+      display: inline-block;
+      min-width: 30px;
+      text-align: center;
+    }
+  </style>
+</head>
+
+<body class="bg-[#bfbfbf] flex items-center justify-center min-h-screen overflow-x-hidden m-0 box-border">
+  <div class="w-full min-h-screen sm:rounded-lg shadow-lg p-4 relative overflow-hidden" style="background-color: ivory;">
+    
+    <!-- Header -->
+    <div class="flex items-center justify-between border-b pb-2 mb-4">
+      <div class="flex items-center">
+        <img alt="App logo" class="w-10 h-10 rounded-full mt-2 mb-2" src="https://placehold.co/40x40" />
+        <span class="ml-6 text-xl font-bold">ASTHA</span>
+      </div>
+      <button class="block text-xl" id="hamburgerBtn">
+        <i class="fas fa-bars"></i>
+      </button>
+    </div>
+
+    <!-- Dropdown Menu -->
+    <div id="menu" class="menu-dropdown hidden">
+      <a href="../fitur1_abhinaya/fitur1.html">Abhinaya</a>
+      <a href="../fitur2_pratibha/fitur2.html">Pratibha</a>
+      <a href="../fitur3_sheeka/fitur3.html">Sheeka</a>
+      <a href="../fitur4_sharira/fitur4.html">Sharira</a>
+      <a href="../fitur5_shanti/fitur5.html">Shanti</a>
+      <a href="../fitur6_tirta/fitur6.html">Tirta</a>
+      <a href="../index.html" class="font-bold">Menu Utama</a>
+    </div>
+
+    <!-- Kalender Workout -->
+    <div class="mt-20">
+      <h2 class="text-lg font-semibold mb-2">Kalender Workout</h2>
+      <div id="kalenderContainer" class="flex gap-2 justify-center w-max mx-auto"></div>
+      <div id="workout-days" class="flex gap-2 justify-center w-max mx-auto"></div>
+    </div>
+
+    <!-- Tombol Mulai Workout Hari Ini -->
+    <div class="mt-6 mb-20">
+      <button id="startWorkoutBtn" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-6 rounded-full text-lg w-full whitespace-nowrap text-center">
+        Mulai Workout Hari Ini
+      </button>
+    </div>
+
+    <!-- Progress Workout Mingguan -->
+    <div>
+      <h2 class="text-lg font-semibold mb-2">Progress Workout Mingguan</h2>
+      <div class="w-full bg-gray-300 rounded-full h-4 mb-2">
+        <div id="progressBar" class="bg-green-500 h-4 rounded-full transition-all duration-700 ease-in-out"></div>
+      </div>
+      <p class="text-sm text-gray-600" id="progressText">4/7 Hari</p>
+    </div>
+  </div>
+
+  <script>
+    const STORAGE_KEY = 'workoutDays';
+    let workoutDays = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+
+    document.getElementById("hamburgerBtn").addEventListener("click", function () {
+      const menu = document.getElementById("menu");
+      menu.classList.toggle("hidden");
+      menu.classList.toggle("show");
+    });
+
+    const startBtn = document.getElementById("startWorkoutBtn");
+    const today = new Date();
+
+    startBtn.addEventListener("click", () => {
+      const todayStr = today.toDateString();
+      
+      // Tambah ke workoutDays
+      if (!workoutDays.includes(todayStr)) {
+        workoutDays.push(todayStr);
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(workoutDays));
+      }
+
+      // Simpan status "started"
+      const statusData = JSON.parse(localStorage.getItem("workoutStatus")) || {};
+      statusData[todayStr] = "started";
+      localStorage.setItem("workoutStatus", JSON.stringify(statusData));
+
+      updateProgressBar();
+      generateWorkoutKalender();
+
+      window.location.href = "workoutpage.html";
+    });
+
+
+    const dayNames = ["Min", "Sen", "Sel", "Rab", "Kam", "Jum", "Sab"];
+
+    function generateWorkoutKalender() {
+      const days = document.getElementById("workout-days");
+      days.innerHTML = "";
+
+      const startDate = new Date("2025-04-07"); // Senin
+      const today = new Date();
+      const startOfWeek = new Date(today);
+      startOfWeek.setDate(today.getDate() - today.getDay() + 1); // Senin minggu ini
+
+      for (let i = 0; i < 7; i++) {
+        const day = new Date(startOfWeek);
+        day.setDate(startOfWeek.getDate() + i);
+        const dayName = day.toLocaleDateString("id-ID", { weekday: "short" });
+        const dayNumber = day.getDate();
+        const dateKey = day.toDateString();
+
+        const statusData = JSON.parse(localStorage.getItem("workoutStatus")) || {};
+        const status = statusData[dateKey] || "none";
+
+        let circleColor = "bg-white"; // default putih
+        if (status === "done") {
+          circleColor = "bg-blue-500"; // biru jika selesai
+        } else if (status === "started") {
+          circleColor = "bg-white"; // putih jika udah mulai tapi belum selesai
+        } else if (
+          status === "none" &&
+          day.toDateString() === today.toDateString()
+        ) {
+          circleColor = "bg-yellow-400"; // kuning jika hari ini dan belum mulai
+        }
+
+        const dayDiv = document.createElement("div");
+        dayDiv.className = "flex flex-col items-center";
+
+        const circle = document.createElement("div");
+        circle.className = `w-10 h-10 ${circleColor} rounded-full flex items-center justify-center border`;
+        circle.textContent = dayNumber;
+
+        const label = document.createElement("span");
+        label.textContent = dayName;
+
+        dayDiv.appendChild(circle);
+        dayDiv.appendChild(label);
+        days.appendChild(dayDiv);
+      }
+    }
+
+
+    function countThisWeekWorkout() {
+      const today = new Date();
+      const monday = new Date(today);
+      const currentDayIndex = today.getDay();
+      monday.setDate(today.getDate() - ((currentDayIndex + 6) % 7));
+
+      const sunday = new Date(monday);
+      sunday.setDate(monday.getDate() + 6);
+
+      const statusData = JSON.parse(localStorage.getItem("workoutStatus")) || {};
+      let count = 0;
+
+      for (let dateStr in statusData) {
+        const date = new Date(dateStr);
+        if (date >= monday && date <= sunday && statusData[dateStr] === "done") {
+          count++;
+        }
+      }
+
+      return count;
+    }
+    
+
+    function updateProgressBar() {
+      const count = countThisWeekWorkout();
+      const progress = Math.min(count / 7 * 100, 100);
+
+      document.getElementById("progressBar").style.width = `${progress}%`;
+      document.getElementById("progressText").textContent = `${count}/7 Hari`;
+    }
+
+    // Inisialisasi
+    generateWorkoutKalender();
+    updateProgressBar();
+  </script>
+</body>
+</html>

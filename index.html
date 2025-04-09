@@ -7,6 +7,7 @@
     <link href="dist/styles.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"/>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+    <script src="https://unpkg.com/lucide@latest"></script>
     <style>
         .hidden { display: none; }
         .menu-dropdown {
@@ -119,46 +120,115 @@
             <a href="index.html" class="font-bold">Menu Utama</a>
         </div>
 
-        
         <!-- FITUR UTAMA -->
-        <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-7 mt-16 mb-8 mx-5">
+        <div class="mt-16 mb-8 mx-5">
+            <!-- Layar besar: 3 fitur di baris pertama -->
+            <div class="hidden md:grid grid-cols-3 gap-7 place-items-center">
+            <!-- Fitur 1 -->
             <div class="flex flex-col items-center">
                 <a href="fitur1_abhinaya/fitur1.html">
-                    <img alt="Feature image" class="w-20 h-20 rounded-full" src="assets/img/1abhinaya_logo.png"/>
+                <div class="w-20 h-20 rounded-full flex items-center justify-center bg-gray-200">
+                    <i data-lucide="bot-message-square" class="w-10 h-10"></i>
+                </div>
                 </a>
                 <span class="mt-2 text-lg font-semibold">Abhinaya</span>
             </div>
+            <!-- Fitur 2 -->
             <div class="flex flex-col items-center">
                 <a href="fitur2_pratibha/fitur2.html">
-                    <img alt="Feature image" class="w-20 h-20 rounded-full" src="https://placehold.co/80x80"/>
+                <div class="w-20 h-20 rounded-full flex items-center justify-center bg-gray-200">
+                    <i data-lucide="graduation-cap" class="w-10 h-10"></i>
+                </div>
                 </a>
                 <span class="mt-2 text-lg font-semibold">Pratibha</span>
             </div>
+            <!-- Fitur 3 -->
             <div class="flex flex-col items-center">
-                <a href="fitur3_sheeka/fitur3.html">  
-                    <img alt="Feature image" class="w-20 h-20 rounded-full" src="https://placehold.co/80x80"/>
+                <a href="fitur3_sheeka/fitur3.html">
+                <div class="w-20 h-20 rounded-full flex items-center justify-center bg-gray-200">
+                    <i data-lucide="alarm-clock" class="w-10 h-10"></i>
+                </div>
                 </a>
                 <span class="mt-2 text-lg font-semibold">Sheeka</span>
             </div>
+            </div>
+        
+            <!-- Layar besar: baris kedua, 2 fitur di tengah -->
+            <div class="hidden md:flex justify-center gap-16 mt-8">
+            <!-- Fitur 4 -->
+                <div class="flex flex-col items-center">
+                    <a href="fitur4_sharira/fitur4.html">
+                    <div class="w-20 h-20 rounded-full flex items-center justify-center bg-gray-200">
+                        <i data-lucide="biceps-flexed" class="w-10 h-10"></i>
+                    </div>
+                    </a>
+                    <span class="mt-2 text-lg font-semibold">Sharira</span>
+                </div>
+                <!-- Fitur 5 -->
+                <div class="flex flex-col items-center">
+                    <a href="fitur6_tirta/fitur6.html">
+                    <div class="w-20 h-20 rounded-full flex items-center justify-center bg-gray-200">
+                        <i data-lucide="book-open-text" class="w-10 h-10"></i>
+                    </div>
+                    </a>
+                    <span class="mt-2 text-lg font-semibold">Tirta</span>
+                </div>
+            </div>
+        
+            <!-- Layar kecil: semua fitur jadi grid 2 kolom -->
+            <div class="grid md:hidden grid-cols-2 gap-7 place-items-center">
+            <!-- Fitur 1 -->
+            <div class="flex flex-col items-center">
+                <a href="fitur1_abhinaya/fitur1.html">
+                <div class="w-20 h-20 rounded-full flex items-center justify-center bg-gray-200">
+                    <i data-lucide="bot-message-square" class="w-10 h-10"></i>
+                </div>
+                </a>
+                <span class="mt-2 text-lg font-semibold">Abhinaya</span>
+            </div>
+            <!-- Fitur 2 -->
+            <div class="flex flex-col items-center">
+                <a href="fitur2_pratibha/fitur2.html">
+                <div class="w-20 h-20 rounded-full flex items-center justify-center bg-gray-200">
+                    <i data-lucide="graduation-cap" class="w-10 h-10"></i>
+                </div>
+                </a>
+                <span class="mt-2 text-lg font-semibold">Pratibha</span>
+            </div>
+            <!-- Fitur 3 -->
+            <div class="flex flex-col items-center">
+                <a href="fitur3_sheeka/fitur3.html">
+                <div class="w-20 h-20 rounded-full flex items-center justify-center bg-gray-200">
+                    <i data-lucide="alarm-clock" class="w-10 h-10"></i>
+                </div>
+                </a>
+                <span class="mt-2 text-lg font-semibold">Sheeka</span>
+            </div>
+            <!-- Fitur 4 -->
             <div class="flex flex-col items-center">
                 <a href="fitur4_sharira/fitur4.html">
-                    <img alt="Feature image" class="w-20 h-20 rounded-full" src="https://placehold.co/80x80"/>
+                <div class="w-20 h-20 rounded-full flex items-center justify-center bg-gray-200">
+                    <i data-lucide="biceps-flexed" class="w-10 h-10"></i>
+                </div>
                 </a>
                 <span class="mt-2 text-lg font-semibold">Sharira</span>
             </div>
-            <div class="flex flex-col items-center">
-                <a href="fitur5_shanti/fitur5.html">
-                    <img alt="Feature image" class="w-20 h-20 rounded-full" src="https://placehold.co/80x80"/>
-                </a>
-                <span class="mt-2 text-lg font-semibold">Shanti</span>
             </div>
+        
+            <!-- Fitur terakhir di layar kecil (posisi tengah) -->
+            <div class="md:hidden flex justify-center mt-8">
             <div class="flex flex-col items-center">
                 <a href="fitur6_tirta/fitur6.html">
-                    <img alt="Feature image" class="w-20 h-20 rounded-full" src="https://placehold.co/80x80"/>
+                <div class="w-20 h-20 rounded-full flex items-center justify-center bg-gray-200">
+                    <i data-lucide="book-open-text" class="w-10 h-10"></i>
+                </div>
                 </a>
                 <span class="mt-2 text-lg font-semibold">Tirta</span>
             </div>
+            </div>
         </div>
+  
+
 
         <div class="border rounded-lg p-4 flex items-center justify-center mt-24 mb-4 quote-container">
             <i class="fas fa-chevron-left nav-btn nav-left"></i>
@@ -175,5 +245,10 @@
         });
     </script>
     <script src="script.js"></script>
+    <script>
+        window.onload = () => {
+          lucide.createIcons();
+        };
+    </script>
 </body>
 </html>

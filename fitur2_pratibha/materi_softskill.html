@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Materi Softskill</title>
+  <link href="../dist/styles.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <style>
+    body {
+      background-color: #fffff0;
+      font-family: 'Segoe UI', sans-serif;
+    }
+    .card {
+      background: white;
+      border-left: 6px solid #60a5fa;
+      border-radius: 1rem;
+      padding: 1.5rem;
+      box-shadow: 0 10px 15px rgba(0, 0, 0, 0.05);
+      transition: transform 0.2s;
+      cursor: pointer;
+    }
+    .card:hover {
+      transform: translateY(-5px);
+    }
+    .title {
+      font-size: 1.25rem;
+      font-weight: bold;
+      color: #2563eb;
+    }
+    .description {
+      margin-top: 0.5rem;
+      color: #4b5563;
+    }
+    .fullscreen {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      background: #fffff0;
+      z-index: 50;
+      padding: 2rem;
+      overflow-y: auto;
+      display: none;
+      flex-direction: column;
+    }
+    .fullscreen h2 {
+      font-size: 1.5rem;
+      color: #1d4ed8;
+      font-weight: bold;
+      margin-bottom: 1rem;
+    }
+    .fullscreen p {
+      color: #374151;
+      line-height: 1.6;
+    }
+    .youtube-link {
+      display: inline-block;
+      margin-top: 1rem;
+      color: #ef4444;
+      font-weight: 500;
+    }
+    .close-btn {
+      align-self: flex-end;
+      background: #e5e7eb;
+      padding: 0.5rem 1rem;
+      border-radius: 0.5rem;
+      cursor: pointer;
+      font-weight: bold;
+      color: #1f2937;
+    }
+
+    .menu-dropdown {
+      position: absolute;
+      top: 60px;
+      right: 20px;
+      background: rgba(255, 255, 255, 0.8);
+      backdrop-filter: blur(10px);
+      border-radius: 12px;
+      z-index: 1000;
+      width: 200px;
+      padding: 10px 0;
+      opacity: 0;
+      transform: translateY(-20px);
+      transition: opacity 0.3s ease, transform 0.3s ease;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    }
+    .menu-dropdown a {
+      display: block;
+      padding: 12px;
+      text-align: center;
+      font-weight: bold;
+      color: #333;
+      text-decoration: none;
+      transition: background 0.2s;
+    }
+    .menu-dropdown a:hover {
+      background: rgba(255, 255, 255, 0.5);
+      border-radius: 8px;
+    }
+    .menu-dropdown.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  </style>
+</head>
+<body class="bg-[#FFFFF0] min-h-screen">
+
+  <div class="w-full p-4 max-w-4xl mx-auto">
+    <!-- Header dan Menu -->
+    <div class="flex items-center justify-between border-b pb-2 mb-6">
+      <div class="flex items-center">
+        <img alt="App logo" class="w-10 h-10 rounded-full mt-2 mb-2" src="https://placehold.co/40x40"/>
+        <span class="ml-6 text-xl font-bold">ASTHA</span>
+      </div>
+      <button class="block text-xl" id="hamburgerBtn">
+        <i class="fas fa-bars"></i>
+      </button>
+    </div>
+    <div id="menu" class="menu-dropdown hidden">
+      <a href="../fitur1_abhinaya/fitur1.html">Abhinaya</a>
+      <a href="fitur2.html">Pratibha</a>
+      <a href="../fitur3_sheeka/fitur3.html">Sheeka</a>
+      <a href="../fitur4_sharira/fitur4.html">Sharira</a>
+      <a href="../fitur5_shanti/fitur5.html">Shanti</a>
+      <a href="../fitur6_tirta/fitur6.html">Tirta</a>
+      <a href="../index.html" class="font-bold">Menu Utama</a>
+    </div>
+
+    <!-- Judul -->
+    <h1 class="text-2xl font-bold mb-4 text-blue-800 text-center">Tips & Trick Upgrade Softskill</h1>
+
+    <!-- Card Materi -->
+    <div class="space-y-6 mb-6 p-4">
+      <div class="card" onclick="showFull(0)">
+        <div class="title">1. Public Speaking</div>
+        <div class="description mb-6">Pelajari teknik berbicara di depan umum dengan percaya diri, mengatur intonasi, dan menyampaikan pesan yang kuat.</div>
+        <a href="https://www.youtube.com/watch?v=dEDcc0aCjaA" target="_blank"
+          class="flex items-center gap-3 p-1 border rounded-lg hover:bg-gray-100 transition-all duration-200 max-w-md">
+          <img src="https://img.youtube.com/vi/dEDcc0aCjaA/0.jpg" alt="Thumbnail"
+            class="w-20 h-auto rounded-md">
+          <div class="text-blue-700 font-medium text-xs sm:text-sm leading-snug">
+            Tonton: How to Speak so That People Want to Listen
+          </div>
+        </a>
+      </div>
+      <div class="card" onclick="showFull(1)">
+        <div class="title">2. Kreativitas dalam Presentasi</div>
+        <div class="description">Cara membuat presentasi yang memukau dan interaktif dengan desain yang menarik dan storytelling yang kuat.</div>
+      </div>
+      <div class="card" onclick="showFull(2)">
+        <div class="title">3. Menulis dengan Dampak</div>
+        <div class="description">Meningkatkan kemampuan menulis, mulai dari artikel, esai, hingga konten kreatif yang berpengaruh.</div>
+      </div>
+      <div class="card" onclick="showFull(3)">
+        <div class="title">4. Critical Thinking</div>
+        <div class="description">Melatih pola pikir kritis dan logis untuk memecahkan masalah dan membuat keputusan yang tepat.</div>
+      </div>
+      <div class="card" onclick="showFull(4)">
+        <div class="title">5. Kolaborasi dan Kepemimpinan</div>
+        <div class="description">Belajar bekerja sama dalam tim, menjadi pemimpin yang baik, serta membangun komunikasi yang efektif.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Fullscreen Materi -->
+  <div class="fullscreen" id="fullscreen">
+    <div class="close-btn" onclick="document.getElementById('fullscreen').style.display='none'">Tutup</div>
+    <h2 id="full-topic"></h2>
+    <p id="full-content"></p>
+    <a id="full-video" href="#" target="_blank"
+      class="flex items-center gap-3 p-1 border rounded-lg hover:bg-gray-100 transition-all duration-200 max-w-md mt-4">
+      <img id="full-img" alt="Thumbnail" class="w-20 h-auto rounded-md">
+      <div id="full-img-title" class="text-blue-700 font-medium text-xs sm:text-sm leading-snug">
+        Tonton di YouTube
+      </div>
+    </a>
+  </div>
+
+  <script>
+    const data = [
+      {
+        topic: "Public Speaking",
+        title: "belajar",
+        content: "Public speaking adalah kemampuan penting dalam dunia profesional maupun sosial. Teknik seperti latihan pernapasan, penguasaan materi, kontak mata, serta penggunaan bahasa tubuh yang tepat dapat membuat presentasi menjadi efektif dan menarik.",
+        link: "https://www.youtube.com/watch?v=dEDcc0aCjaA",
+        img: "https://img.youtube.com/vi/dEDcc0aCjaA/0.jpg"
+      },
+      {
+        title: "Kreativitas dalam Presentasi",
+        content: "Kreativitas sangat penting dalam membuat presentasi yang tidak membosankan. Gunakan elemen visual, storytelling, humor, dan interaksi audiens untuk menciptakan presentasi yang memukau.",
+        link: "https://www.youtube.com/watch?v=5nH0nQUhmpc",
+        img: "https://img.youtube.com/vi/5nH0nQUhmpc/0.jpg"
+      },
+      {
+        title: "Menulis dengan Dampak",
+        content: "Menulis yang berdampak melibatkan kejelasan pesan, struktur yang rapi, gaya bahasa yang sesuai, dan sentuhan emosi. Penting untuk memahami audiens agar tulisan bisa diterima dan dimengerti dengan baik.",
+        link: "https://www.youtube.com/watch?v=IoPlyjH7kzU",
+        img: "https://img.youtube.com/vi/IoPlyjH7kzU/0.jpg"
+      },
+      {
+        title: "Critical Thinking",
+        content: "Berpikir kritis membantu kita menyaring informasi, mengenali bias, dan mengambil keputusan yang logis. Latih dengan bertanya 'mengapa', 'bagaimana', dan 'apa akibatnya'.",
+        link: "https://www.youtube.com/watch?v=6P1V5z1HAyw",
+        img: "https://img.youtube.com/vi/6P1V5z1HAyw/0.jpg"
+      },
+      {
+        title: "Kolaborasi dan Kepemimpinan",
+        content: "Dalam kerja tim, komunikasi terbuka, empati, dan kemampuan memotivasi menjadi kunci. Pemimpin yang efektif mampu mendengar, memberi arahan yang jelas, dan menghargai kontribusi semua anggota.",
+        link: "https://www.youtube.com/watch?v=6Y3Asa_4Mqk",
+        img: "https://img.youtube.com/vi/6Y3Asa_4Mqk/0.jpg"
+      }
+    ];
+
+    function showFull(index) {
+      const item = data[index];
+      const f = document.getElementById('fullscreen');
+      f.style.display = 'flex';
+      document.getElementById('full-topic').innerText = item.topic;
+      document.getElementById('full-content').innerText = item.content;
+      document.getElementById('full-video').href = item.link;
+      document.getElementById('full-img').src = item.img;
+      document.getElementById('full-img-title').innerText = "Tonton: " + item.title;
+    }
+
+    document.getElementById("hamburgerBtn").addEventListener("click", function () {
+      const menu = document.getElementById("menu");
+      menu.classList.toggle("hidden");
+      menu.classList.toggle("show");
+    });
+  </script>
+</body>
+</html>

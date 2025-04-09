@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Astha App - Workout Harian</title>
+  <link href="../dist/styles.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer"/>
+  <style>
+    .hidden { display: none; }
+    .menu-dropdown {
+      position: absolute;
+      top: 60px;
+      right: 20px;
+      background: rgba(255, 255, 255, 0.8);
+      backdrop-filter: blur(10px);
+      border-radius: 12px;
+      z-index: 1000;
+      width: 200px;
+      padding: 10px 0;
+      opacity: 0;
+      transform: translateY(-20px);
+      transition: opacity 0.3s ease, transform 0.3s ease;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    }
+    .menu-dropdown a {
+      display: block;
+      padding: 12px;
+      text-align: center;
+      font-weight: bold;
+      color: #333;
+      text-decoration: none;
+      transition: background 0.2s;
+    }
+    .menu-dropdown a:hover {
+      background: rgba(255, 255, 255, 0.5);
+      border-radius: 8px;
+    }
+    .menu-dropdown.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  </style>
+</head>
+
+<body class="bg-[#bfbfbf] flex items-center justify-center min-h-screen">
+  <div class="w-full min-h-screen sm:rounded-lg shadow-lg p-4 relative" style="background-color:ivory;">
+    
+    <!-- Header -->
+    <div class="flex items-center justify-between border-b pb-2 mb-4">
+      <div class="flex items-center">
+        <img alt="App logo" class="w-10 h-10 rounded-full mt-2 mb-2" src="https://placehold.co/40x40"/>
+        <span class="ml-6 text-xl font-bold">ASTHA</span>
+      </div>
+      <button class="block text-xl" id="hamburgerBtn">
+        <i class="fas fa-bars"></i>
+      </button>
+    </div>
+
+    <!-- Dropdown Menu -->
+    <div id="menu" class="menu-dropdown hidden">
+      <a href="../fitur1_abhinaya/fitur1.html">Abhinaya</a>
+      <a href="../fitur2_pratibha/fitur2.html">Pratibha</a>
+      <a href="../fitur3_sheeka/fitur3.html">Sheeka</a>
+      <a href="../fitur4_sharira/fitur4.html">Sharira</a>
+      <a href="../fitur5_shanti/fitur5.html">Shanti</a>
+      <a href="../fitur6_tirta/fitur6.html">Tirta</a>
+      <a href="../index.html" class="font-bold">Menu Utama</a>
+    </div>  
+
+    <!-- Workout Content -->
+    <div class="max-w-xl mx-auto mt-4 p-4 bg-white rounded shadow">
+      <h1 class="text-2xl font-bold mb-4 text-center text-blue-600">Workout Hari Ini</h1>
+      
+      <div id="workoutList" class="space-y-3">
+        <!-- Workout accordion akan dimuat lewat JS -->
+      </div>
+
+      <button id="doneBtn" disabled class="mt-6 w-full bg-gray-400 text-white py-2 rounded font-semibold">
+        Tandai Selesai Hari Ini
+      </button>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById("hamburgerBtn").addEventListener("click", function() {
+      const menu = document.getElementById("menu");
+      menu.classList.toggle("hidden");
+      menu.classList.toggle("show");
+    });
+
+    const today = new Date().getDay();
+    const workoutList = document.getElementById("workoutList");
+    const doneBtn = document.getElementById("doneBtn");
+    doneBtn.disabled = true;
+
+    const workoutByDay = {
+      0: ["30 detik Plank", "15x Push Up", "20x Sit Up"],
+      1: ["20x Jumping Jack", "30 detik Wall Sit", "15x Squat"],
+      2: ["15x Lunge", "30 detik High Knees", "15x Burpees"],
+      3: ["20x Jump Squat", "30 detik Mountain Climber", "10x Pull Up"],
+      4: ["30 detik Side Plank", "15x Leg Raise", "20x Bicycle Crunch"],
+      5: ["15x Squat", "15x Push Up", "30 detik Wall Sit"],
+      6: ["30 detik Jump Rope", "15x Sit Up", "20x Arm Circle"]
+    };
+
+    const todayWorkout = workoutByDay[today] || [];
+    let checkedStatus = Array(todayWorkout.length).fill(false);
+
+    todayWorkout.forEach((item, index) => {
+      const isTimed = item.includes("detik") || item.includes("menit");
+
+      const container = document.createElement("div");
+      container.className = "bg-white rounded shadow";
+
+      const header = document.createElement("button");
+      header.className = "w-full text-left px-4 py-2 font-semibold flex justify-between items-center";
+      header.innerHTML = `
+        <span>${item}</span>
+        <span id="check-${index}" class="text-gray-400"><i class="fa-solid fa-chevron-down"></i></span>
+      `;
+
+      const content = document.createElement("div");
+      content.className = "px-4 py-2 hidden text-sm space-y-2";
+      content.innerHTML = `
+        <p><strong>Target Otot:</strong> Otot inti & tubuh bagian bawah</p>
+        <p><strong>Instruksi:</strong> Lakukan gerakan dengan posisi benar dan stabil.</p>
+        ${isTimed ? `<p><strong>Durasi:</strong> ${item.match(/\d+\s*(detik|menit)/)?.[0]}</p>` : ""}
+        ${isTimed ? `<div id="timer-${index}" class="text-blue-500 font-semibold">Belum mulai</div>` : ""}
+        ${isTimed ? `<button class="bg-blue-500 text-white p-2 px-8 py-2 rounded-lg text-sm" onclick="startTimer('${item}', 'timer-${index}')">Mulai Timer</button>` : ""}
+        <button onclick="markDone(${index})" class="bg-green-500 text-white px-6 py-2 rounded-lg text-sm p-2">Tandai Selesai</button>
+      `;
+
+
+      header.addEventListener("click", () => {
+        const isOpen = content.classList.contains("block");
+        document.querySelectorAll("#workoutList > div > div:nth-child(2)").forEach(c => c.classList.add("hidden"));
+        if (!isOpen) content.classList.remove("hidden");
+        else content.classList.add("hidden");
+      });
+
+      container.appendChild(header);
+      container.appendChild(content);
+      workoutList.appendChild(container);
+    });
+
+    function parseDuration(text) {
+      const detik = text.match(/(\d+)\s*detik/);
+      const menit = text.match(/(\d+)\s*menit/);
+      let duration = 0;
+      if (menit) duration += parseInt(menit[1]) * 60;
+      if (detik) duration += parseInt(detik[1]);
+      return duration;
+    }
+
+    function startTimer(text, id) {
+      const el = document.getElementById(id);
+      let sisa = parseDuration(text);
+      el.textContent = `${sisa}s`;
+      const interval = setInterval(() => {
+        sisa--;
+        el.textContent = `${sisa}s`;
+        if (sisa <= 0) {
+          clearInterval(interval);
+          el.textContent = "Selesai!";
+        }
+      }, 1000);
+    }
+
+    function markDone(index) {
+      checkedStatus[index] = true;
+      document.getElementById(`check-${index}`).innerHTML = '<i class="fa-solid fa-check text-green-600"></i>';
+      document.querySelectorAll("#workoutList > div > div:nth-child(2)")[index].classList.add("hidden");
+
+      if (checkedStatus.every(Boolean)) {
+        doneBtn.disabled = false;
+        doneBtn.classList.remove("bg-gray-400");
+        doneBtn.classList.add("bg-green-500", "hover:bg-green-600");
+      }
+    }
+
+    doneBtn.addEventListener("click", () => {
+      const dateStr = new Date().toDateString();
+      const status = JSON.parse(localStorage.getItem("workoutStatus")) || {};
+      status[dateStr] = "done";
+      localStorage.setItem("workoutStatus", JSON.stringify(status));
+      window.location.href = "fitur4.html";
+    });
+  </script>
+</body>
+</html>

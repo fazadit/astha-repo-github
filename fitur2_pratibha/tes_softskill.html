@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Identifikasi Soft Skill</title>
+  <link href="../dist/styles.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <style>
+    .hidden { display: none; }
+    .menu-dropdown {
+      position: absolute;
+      top: 60px;
+      right: 20px;
+      background: rgba(255, 255, 255, 0.8);
+      backdrop-filter: blur(10px);
+      border-radius: 12px;
+      z-index: 1000;
+      width: 200px;
+      padding: 10px 0;
+      opacity: 0;
+      transform: translateY(-20px);
+      transition: opacity 0.3s ease, transform 0.3s ease;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    }
+    .menu-dropdown a {
+      display: block;
+      padding: 12px;
+      text-align: center;
+      font-weight: bold;
+      color: #333;
+      text-decoration: none;
+      transition: background 0.2s;
+    }
+    .menu-dropdown a:hover {
+      background: rgba(255, 255, 255, 0.5);
+      border-radius: 8px;
+    }
+    .menu-dropdown.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  </style>
+</head>
+<body class="bg-[#bfbfbf] flex items-center justify-center min-h-screen">
+  <div class="w-full min-h-screen sm:rounded-lg shadow-lg p-4 relative" style="background-color:ivory;">
+    <!-- Header & Dropdown -->
+    <div class="flex items-center justify-between border-b pb-2 mb-4">
+      <div class="flex items-center">
+        <img alt="App logo" class="w-10 h-10 rounded-full mt-2 mb-2" src="https://placehold.co/40x40"/>
+        <span class="ml-6 text-xl font-bold">ASTHA</span>
+      </div>
+      <button class="block text-xl" id="hamburgerBtn"><i class="fas fa-bars"></i></button>
+    </div>
+    <div id="menu" class="menu-dropdown hidden">
+      <a href="../fitur1_abhinaya/fitur1.html">Abhinaya</a>
+      <a href="fitur2.html">Pratibha</a>
+      <a href="../fitur3_sheeka/fitur3.html">Sheeka</a>
+      <a href="../fitur4_sharira/fitur4.html">Sharira</a>
+      <a href="../fitur5_shanti/fitur5.html">Shanti</a>
+      <a href="../fitur6_tirta/fitur6.html">Tirta</a>
+      <a href="../index.html">Menu Utama</a>
+    </div>
+
+    <!-- Keterangan Skala -->
+    <div class="bg-white border border-blue-300 rounded-xl p-6 shadow-md mb-6 mt-4">
+      <h3 class="text-blue-800 text-lg font-semibold mb-3 flex items-center">
+        <i class="fas fa-info-circle mr-2"></i> Keterangan Skala Penilaian:
+      </h3>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-gray-700 text-sm">
+        <div><span class="font-bold">1.  </span> Sangat Tidak Setuju</div>
+        <div><span class="font-bold">2.  </span> Tidak Setuju</div>
+        <div><span class="font-bold">3.  </span> Netral</div>
+        <div><span class="font-bold">4.  </span> Setuju</div>
+        <div><span class="font-bold">5.  </span> Sangat Setuju</div>
+      </div>
+    </div>
+
+    <!-- Form -->
+    <form id="softskillForm" class="space-y-4">
+      <div id="questionsContainer" class="space-y-6"></div>
+      <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 mt-4">Kirim Jawaban</button>
+    </form>
+
+    <!-- Hasil -->
+    <div id="resultContainer" class="mt-20 hidden text-center bg-white p-4 rounded shadow">
+      <h2 class="text-xl font-bold">Hasil Tes Soft Skill</h2>
+      <div id="categoryScores" class="mt-8 text-left"></div>
+      <button onclick="window.location.reload()" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 mt-20">Ulang Tes</button>
+      <a href="fitur2.html" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 mt-20 ml-6">Kembali ke Menu</a>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById("hamburgerBtn").addEventListener("click", () => {
+      const menu = document.getElementById("menu");
+      menu.classList.toggle("hidden");
+      menu.classList.toggle("show");
+    });
+
+    const categories = {
+      "Komunikasi": [],
+      "Kerja Sama": [],
+      "Kepemimpinan": [],
+      "Pemecahan Masalah": [],
+      "Adaptabilitas": [],
+      "Berpikir Kritis": [],
+      "Manajemen Waktu": []
+    };
+
+    const sampleStatements = {
+      "Komunikasi": [
+        "Saya mampu menyampaikan ide dengan jelas.",
+        "Saya bisa menjadi pendengar yang baik.",
+        "Saya terbuka terhadap kritik yang membangun.",
+        "Saya bisa berkomunikasi dengan berbagai kalangan.",
+        "Saya merasa percaya diri saat berbicara di depan umum.",
+        "Saya mampu menyampaikan pendapat tanpa menyinggung orang lain.",
+        "Saya memahami pentingnya komunikasi dua arah.",
+        "Saya bisa menyesuaikan gaya bicara saya sesuai dengan siapa yang saya ajak bicara.",
+        "Saya bisa menyampaikan pesan dengan singkat dan padat.",
+        "Saya tetap tenang saat berbicara dalam situasi yang menegangkan atau penting."
+      ],
+      "Kerja Sama": [
+        "Saya mengutamakan kepentingan kelompok dibandingkan kepentingan pribadi saat bekerja bersama.",
+        "Saya menawarkan bantuan kepada teman yang kesulitan dalam tugas kelompok.",
+        "Saya mendengarkan ide dari semua anggota tim sebelum menyampaikan pendapat sendiri.",
+        "Saya tetap berusaha menyelesaikan tugas meskipun anggota kelompok lain kurang aktif.",
+        "Saya bisa menerima keputusan bersama meski berbeda dengan pendapat saya.",
+        "Saya memberi apresiasi terhadap kontribusi anggota tim, sekecil apa pun itu.",
+        "Saya menjaga suasana kerja kelompok tetap positif dan saling menghargai.",
+        "Saya tidak keberatan jika harus mengalah demi kemajuan kelompok.",
+        "Saya menyesuaikan gaya komunikasi saya agar selaras dengan anggota tim yang berbeda karakter.",
+        "Saya menyelesaikan konflik dalam tim dengan berdiskusi, bukan dengan emosi."
+      ],
+      "Kepemimpinan": [
+        "Saya sering diminta teman untuk menjadi penanggung jawab dalam suatu kegiatan.",
+        "Saya bisa membuat keputusan dengan cepat saat kelompok menghadapi kebingungan.",
+        "Saya mampu menjaga semangat tim saat mereka mulai kehilangan motivasi.",
+        "Saya terbiasa menyusun rencana sebelum memulai suatu kegiatan.",
+        "Saya tidak ragu mengambil tanggung jawab saat situasi sedang sulit.",
+        "Saya bisa membagi tugas secara adil kepada anggota kelompok.",
+        "Saya memberi contoh perilaku yang ingin saya lihat dari anggota tim.",
+        "Saya tetap tenang saat orang lain dalam kelompok mulai panik.",
+        "Saya berani menghadapi risiko demi mencapai tujuan kelompok.",
+        "Saya mendengarkan masukan dari anggota tim sebelum mengambil keputusan akhir."
+      ],
+      "Pemecahan Masalah": [
+        "Saya bisa tetap tenang saat menghadapi masalah yang mendadak.",
+        "Saya terbiasa mencari tahu akar permasalahan sebelum bertindak.",
+        "Saya berusaha menemukan beberapa solusi sebelum memilih yang terbaik.",
+        "Saya mampu mengambil keputusan di bawah tekanan.",
+        "Saya melihat masalah sebagai tantangan, bukan hambatan.",
+        "Saya mau menerima ide dari orang lain untuk menyelesaikan masalah.",
+        "Saya mampu menganalisis situasi secara logis sebelum bertindak.",
+        "Saya mengevaluasi hasil solusi yang saya ambil untuk pembelajaran ke depan.",
+        "Saya tidak mudah menyerah ketika solusi pertama tidak berhasil.",
+        "Saya terbuka untuk mencoba pendekatan yang berbeda jika cara lama tidak berhasil."
+      ],
+      "Adaptabilitas": [
+        "Saya bisa tetap tenang ketika rencana yang sudah dibuat harus berubah tiba-tiba.",
+        "Saya cepat menyesuaikan diri dengan situasi baru.",
+        "Saya tidak keberatan ketika harus belajar hal baru di luar kebiasaan saya.",
+        "Saya tetap semangat meskipun berada di lingkungan yang asing.",
+        "Saya terbuka terhadap perubahan dan ide-ide baru.",
+        "Saya mampu bekerja dengan baik meski menghadapi aturan yang berbeda dari biasanya.",
+        "Saya bisa menyesuaikan cara kerja saya sesuai dengan kebutuhan tim.",
+        "Saya tetap produktif meskipun menghadapi perubahan jadwal atau prioritas.",
+        "Saya tidak terpaku pada satu cara ketika menyelesaikan tugas.",
+        "Saya melihat perubahan sebagai kesempatan untuk berkembang, bukan sebagai ancaman."
+      ],
+      "Manajemen Waktu": [
+        "Saya membuat daftar prioritas sebelum memulai aktivitas harian.",
+        "Saya jarang menunda-nunda pekerjaan yang penting.",
+        "Saya bisa membagi waktu dengan baik antara tugas dan istirahat.",
+        "Saya menyelesaikan tugas sesuai tenggat waktu yang ditentukan.",
+        "Saya mengatur waktu belajar atau bekerja secara terjadwal.",
+        "Saya menyiapkan waktu cadangan jika terjadi hal tak terduga.",
+        "Saya bisa fokus pada satu tugas tanpa terlalu terdistraksi.",
+        "Saya memperkirakan durasi waktu yang dibutuhkan untuk menyelesaikan tugas.",
+        "Saya mengevaluasi penggunaan waktu saya agar lebih efektif ke depannya.",
+        "Saya tetap disiplin menjalankan jadwal meskipun tidak diawasi."
+      ],
+      "Berpikir Kritis": [
+        "Saya terbiasa mengecek kebenaran informasi sebelum mempercayainya.",
+        "Saya mempertimbangkan berbagai sudut pandang sebelum membuat kesimpulan.",
+        "Saya tidak langsung menerima pendapat orang tanpa mempertanyakannya terlebih dahulu.",
+        "Saya sering bertanya 'mengapa' dan 'bagaimana' terhadap sesuatu yang saya pelajari.",
+        "Saya bisa membedakan fakta dan opini dalam diskusi atau berita.",
+        "Saya menggunakan logika ketika menilai suatu masalah.",
+        "Saya mampu menjelaskan alasan di balik keputusan yang saya buat.",
+        "Saya terbiasa membandingkan beberapa sumber sebelum mengambil keputusan.",
+        "Saya menyadari bahwa tidak semua hal punya jawaban yang pasti, dan itu tidak masalah.",
+        "Saya suka menganalisis suatu hal secara mendalam sebelum mengambil tindakan."
+      ]
+    };
+
+    const questionsContainer = document.getElementById("questionsContainer");
+    let questionIndex = 1;
+    for (let category in categories) {
+      sampleStatements[category].forEach((statement, i) => {
+        const name = `q${questionIndex}`;
+        const wrapper = document.createElement("div");
+        wrapper.className = "bg-white p-4 rounded shadow";
+
+        const question = document.createElement("p");
+        question.className = "mb-8 font-medium";
+        question.textContent = `${questionIndex}.  ${statement}`;
+        wrapper.appendChild(question);
+
+        for (let val = 1; val <= 5; val++) {
+          const label = document.createElement("label");
+          label.className = "block mb-2";
+
+          const input = document.createElement("input");
+          input.type = "radio";
+          input.name = name;
+          input.value = val;
+          input.required = true;
+          input.className = "mr-2";
+
+          label.appendChild(input);
+          label.appendChild(document.createTextNode(val.toString()));
+          wrapper.appendChild(label);
+        }
+
+        questionsContainer.appendChild(wrapper);
+        categories[category].push({ name });
+        questionIndex++;
+      });
+    }
+
+    function getLabel(score, max) {
+      const ratio = score / max;
+      if (ratio >= 0.8) return "Baik";
+      if (ratio >= 0.6) return "Cukup";
+      return "Perlu Pengembangan";
+    }
+
+    document.getElementById("softskillForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+      const formData = new FormData(e.target);
+      const scores = { "Komunikasi": 0, "Kerja Sama": 0, "Kepemimpinan": 0, "Pemecahan Masalah": 0, "Etika Kerja": 0 };
+
+      for (let [name, value] of formData.entries()) {
+        for (let category in categories) {
+          if (categories[category].some(q => q.name === name)) {
+            scores[category] += parseInt(value);
+            break;
+          }
+        }
+      }
+
+      const display = document.getElementById("categoryScores");
+      display.innerHTML = "";
+      for (let category in scores) {
+        const maxScore = 10 * 5;
+        const result = document.createElement("p");
+        result.innerHTML = `<strong>${category}:</strong> ${scores[category]} / ${maxScore} (${getLabel(scores[category], maxScore)})`;
+        display.appendChild(result);
+      }
+
+      document.getElementById("softskillForm").classList.add("hidden");
+      document.querySelector(".bg-white.border.border-blue-300").classList.add("hidden");
+      document.getElementById("resultContainer").classList.remove("hidden");
+      document.getElementById("resultContainer").scrollIntoView({ behavior: "smooth" });
+    });
+  </script>
+</body>
+</html>
